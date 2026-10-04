@@ -8,24 +8,26 @@ import {
   getGmailClient,
   sendEmail
 } from "./services/gmailService.js";
+import {
+  createReminderId,
+  hasReminderBeenSent,
+  markReminderAsSent
+} from "./services/reminderStateService.js";
 
-console.log("Starting F1 reminder test...\n");
+console.log("Starting full reminder test...\n");
 
+// Get current F1 schedule
 const schedule = await getCurrentSeasonSchedule();
 
 const races = schedule.MRData.RaceTable.Races;
 
 const upcomingSessions = getUpcomingSessions(races);
 
-// Find Singapore Practice 1
-const testSession = upcomingSessions.find(
-  (session) =>
-    session.grandPrix === "Singapore Grand Prix" &&
-    session.session === "Practice 1"
-);
+// Find a session to test
+const testSession = upcomingSessions[0];
 
 if (!testSession) {
-  throw new Error("Singapore Practice 1 could not be found.");
+  throw new Error("No upcoming F1 sessions found.");
 }
 
 console.log("Test session:");
@@ -40,6 +42,7 @@ const fakeCurrentTime = new Date(
 console.log("\nSimulated current time:");
 console.log(fakeCurrentTime.toISOString());
 
+// Check for due reminder
 const dueReminders = findDueReminders(
   [testSession],
   fakeCurrentTime
@@ -55,6 +58,25 @@ const reminder = dueReminders[0];
 console.log("\nReminder detected:");
 console.log(reminder.reminder);
 
+// Create unique reminder ID
+const reminderId = createReminderId({
+  grandPrix: reminder.grandPrix,
+  session: reminder.session,
+  dateTime: reminder.dateTime,
+  reminder: reminder.reminder
+});
+
+console.log("\nReminder ID:");
+console.log(reminderId);
+
+// Check state
+if (hasReminderBeenSent(reminderId)) {
+  console.log("\nThis reminder has already been sent.");
+  console.log("Test stopped to prevent duplicate email.");
+  process.exit(0);
+}
+
+// Create email
 const email = createReminderEmail({
   grandPrix: reminder.grandPrix,
   session: {
@@ -68,9 +90,10 @@ const email = createReminderEmail({
 console.log("\nSubject:");
 console.log(email.subject);
 
+// Send email
 console.log("\nSending email...");
 
-const gmail = await getGmailClient();
+const gmail = getGmailClient();
 
 const result = await sendEmail({
   gmail,
@@ -80,4 +103,10 @@ const result = await sendEmail({
 });
 
 console.log("\nEmail sent successfully!");
-console.log("Message ID:", result.id);
+console.log("Message ID:", result.messageId);
+
+// Mark as sent
+markReminderAsSent(reminderId);
+
+console.log("\nReminder marked as sent.");
+console.log("Full reminder flow test completed successfully.");

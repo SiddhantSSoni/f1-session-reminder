@@ -12,13 +12,10 @@ const STATE_FILE = path.join(
 
 function loadState() {
   if (!fs.existsSync(STATE_FILE)) {
-    return {
-      sentReminders: []
-    };
+    return { sentReminders: [] };
   }
 
   const data = fs.readFileSync(STATE_FILE, "utf-8");
-
   return JSON.parse(data);
 }
 
@@ -32,9 +29,10 @@ function saveState(state) {
 export function createReminderId({
   grandPrix,
   session,
+  dateTime,
   reminder
 }) {
-  return `${grandPrix}|${session}|${reminder}`;
+  return `${grandPrix}|${session}|${dateTime}|${reminder}`;
 }
 
 export function hasReminderBeenSent(reminderId) {

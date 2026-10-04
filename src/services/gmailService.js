@@ -1,37 +1,16 @@
-import path from "node:path";
-import process from "node:process";
-import { authenticate } from "@google-cloud/local-auth";
-import { google } from "googleapis";
+import "dotenv/config";
+import nodemailer from "nodemailer";
 
-const SCOPES = [
-  "https://www.googleapis.com/auth/gmail.send"
-];
-
-const CREDENTIALS_PATH = path.join(
-  process.cwd(),
-  "credentials",
-  "client_secret.json"
-);
-
-export async function getGmailClient() {
-  const auth = await authenticate({
-    scopes: SCOPES,
-    keyfilePath: CREDENTIALS_PATH
+export function getGmailClient() {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.SENDER_EMAIL,
+      pass: process.env.GMAIL_APP_PASSWORD
+    }
   });
 
-  // Make sure we actually have a valid access token
-  const accessToken = await auth.getAccessToken();
-
-  if (!accessToken.token) {
-    throw new Error("Failed to obtain Gmail access token.");
-  }
-
-  console.log("Gmail access token obtained.");
-
-  return google.gmail({
-    version: "v1",
-    auth
-  });
+  return transporter;
 }
 
 export async function sendEmail({
@@ -40,25 +19,12 @@ export async function sendEmail({
   subject,
   html
 }) {
-  const message = [
-    `To: ${to}`,
-    "MIME-Version: 1.0",
-    "Content-Type: text/html; charset=UTF-8",
-    `Subject: ${subject}`,
-    "",
+  const result = await gmail.sendMail({
+    from: process.env.SENDER_EMAIL,
+    to,
+    subject,
     html
-  ].join("\r\n");
-
-  const encodedMessage = Buffer
-    .from(message)
-    .toString("base64url");
-
-  const response = await gmail.users.messages.send({
-    userId: "me",
-    requestBody: {
-      raw: encodedMessage
-    }
   });
 
-  return response.data;
+  return result;
 }
