@@ -62,14 +62,15 @@ for (const reminder of dueReminders) {
 
   // 6. Create the email
   const email = createReminderEmail({
-    grandPrix: reminder.grandPrix,
-    session: {
-      name: reminder.session,
-      dateTime: reminder.dateTime
-    },
-    circuit: reminder.circuit,
-    reminderText: reminder.reminder
-  });
+  grandPrix: reminder.grandPrix,
+  country: reminder.country,
+  session: {
+    name: reminder.session,
+    dateTime: reminder.dateTime
+  },
+  circuit: reminder.circuit,
+  reminderText: reminder.reminder
+});
 
   // 7. Send the email
   const result = await sendEmail({

@@ -1,13 +1,39 @@
 import { formatDate, formatTime } from "../utils/formatters.js";
 
+const COUNTRY_FLAGS = {
+  Australia: "🇦🇺",
+  Austria: "🇦🇹",
+  Azerbaijan: "🇦🇿",
+  Bahrain: "🇧🇭",
+  Belgium: "🇧🇪",
+  Brazil: "🇧🇷",
+  Canada: "🇨🇦",
+  China: "🇨🇳",
+  Hungary: "🇭🇺",
+  Italy: "🇮🇹",
+  Japan: "🇯🇵",
+  Mexico: "🇲🇽",
+  Monaco: "🇲🇨",
+  Netherlands: "🇳🇱",
+  Qatar: "🇶🇦",
+  "Saudi Arabia": "🇸🇦",
+  Singapore: "🇸🇬",
+  Spain: "🇪🇸",
+  "United Kingdom": "🇬🇧",
+  "United States": "🇺🇸"
+};
+
 export function createReminderEmail({
   grandPrix,
+  country,
   session,
   circuit,
   reminderText
 }) {
   const date = formatDate(session.dateTime);
   const time = formatTime(session.dateTime);
+
+  const flag = COUNTRY_FLAGS[country] || "🏁";
 
   const subject = `F1 Reminder - ${session.name}, ${grandPrix}`;
 
@@ -39,14 +65,14 @@ export function createReminderEmail({
       margin: 0 0 25px 0;
       font-size: 26px;
     ">
-      🏁 ${grandPrix}
+      ${flag} ${grandPrix}
     </h1>
 
     <h2 style="
       margin: 0 0 20px 0;
       font-size: 20px;
     ">
-      🏎️ ${session.name}
+      🏁 ${session.name}
     </h2>
 
     <p style="font-size: 16px;">
