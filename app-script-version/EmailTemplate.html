@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px 10px;
+      background-color: #000000;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #ffffff;
+    }
+
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #151719;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .email-content {
+      padding: 24px 20px 18px;
+    }
+
+    .header {
+      width: 100%;
+      border-bottom: 1px solid #444444;
+      padding-bottom: 25px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .header-label {
+      font-size: 14px;
+      color: #b7b7b7;
+      text-align: right;
+    }
+
+    .round-label {
+      color: #E10600;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    .grand-prix {
+      color: #ffffff;
+      font-size: 29px;
+      line-height: 1.2;
+      font-weight: bold;
+      margin: 0 0 18px;
+    }
+
+    .session-card {
+      background-color: #242729;
+      border-radius: 15px;
+      padding: 20px 15px;
+      margin-bottom: 18px;
+    }
+
+    .section-label {
+      color: #b7b7b7;
+      font-size: 14px;
+      margin-bottom: 13px;
+    }
+
+    .session-name {
+      color: #ffffff;
+      font-size: 23px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .session-divider {
+      border-top: 1px solid #454545;
+      margin-bottom: 20px;
+    }
+
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .details-table td {
+      vertical-align: top;
+      width: 50%;
+    }
+
+    .details-table td:last-child {
+      text-align: right;
+    }
+
+    .detail-label {
+      color: #b7b7b7;
+      font-size: 14px;
+      margin-bottom: 9px;
+    }
+
+    .detail-value {
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .countdown-label {
+      color: #b7b7b7;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .countdown {
+      color: #E10600;
+      font-size: 29px;
+      font-weight: bold;
+      margin-bottom: 19px;
+    }
+
+    .circuit {
+      color: #b7b7b7;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    @media screen and (max-width: 480px) {
+      body {
+        padding: 10px 5px;
+      }
+
+      .email-content {
+        padding: 20px 15px;
+      }
+
+      .grand-prix {
+        font-size: 25px;
+      }
+
+      .session-name {
+        font-size: 21px;
+      }
+
+      .countdown {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="email-container">
+    <div class="email-content">
+
+      <!-- Header -->
+      <table class="header" role="presentation">
+        <tr>
+          <td class="brand">F1 REMINDER</td>
+          <td class="header-label">RACE WEEKEND</td>
+        </tr>
+      </table>
+
+      <!-- Grand Prix information -->
+      <div class="round-label">
+        ROUND <?= roundNumber ?> · <?= country ?>
+      </div>
+
+      <h1 class="grand-prix">
+        <?= grandPrix ?>
+      </h1>
+
+      <!-- Session information -->
+      <div class="session-card">
+
+        <div class="section-label">UPCOMING SESSION</div>
+
+        <div class="session-name">
+          <?= sessionName ?>
+        </div>
+
+        <div class="session-divider"></div>
+
+        <table class="details-table" role="presentation">
+          <tr>
+            <td>
+              <div class="detail-label">DATE</div>
+              <div class="detail-value"><?= date ?></div>
+            </td>
+
+            <td>
+              <div class="detail-label">START TIME</div>
+              <div class="detail-value"><?= startTime ?> IST</div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+
+      <!-- Countdown -->
+      <div class="countdown-label">SESSION STARTS IN</div>
+
+      <div class="countdown">
+        <?= countdown ?>
+      </div>
+
+      <!-- Circuit -->
+      <div class="circuit">
+        <?= circuit ?>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,4 +1,18 @@
+# Dependencies
 node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Credentials and authentication tokens
 credentials/
 token.json
-.env
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
